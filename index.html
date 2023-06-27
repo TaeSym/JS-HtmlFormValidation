@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+          /* styles paragraphs that alert of incorrect input parameters*/
+          .alert {
+            color: red;
+            display: inline;
+            margin-left: 30px;
+          }
+           /* styles paragraph that confirms user's input is acceptable*/
+           #accepted {
+            color: limegreen;
+          }
+        </style>
+      <head>
+<body>
+
+
+<div>
+    <form id="myForm" action="#" method="POST">
+        <label for="uid">User ID:</label>
+        <input type="text" id="uid" name="uid" value="FakeUser18"/><p id="uidError" class="alert"></p><br>
+  
+        <label for="fname">First name:</label>
+        <input type="text" id="fname" name="fname" value="FakeFname"/><p id="fnameError" class="alert"></p><br>
+  
+        <label for="lname">Last name:</label>
+        <input type="text" id="lname" name="lname" value="FakeLname"/><p id="lnameError" class="alert"></p><br>
+  
+        <label for="birthday">Birthday:</label>
+        <input type="date" id="birthday" name="birthday" value="1995-06-25"/><p id="birthdayError" class="alert"></p><br>
+  
+        <input type="submit" value="Accept" onclick="validate()"/>
+      </form>
+      <p id="accepted"></p>
+      <p id="x"></p>
+</div>
+
+<script>
+    // put your JavaScript code to read HTML inputs
+const uid = document.getElementById("uid").value;
+const pattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])/;
+const fname = document.getElementById("fname").value;
+const lname = document.getElementById("lname").value;
+const birthday = document.getElementById("birthday").value;
+const birthDate = Date.parse(birthday);
+const currentDate = Date.now();
+//console.log(currentDate);
+//console.log(birthday);
+const mpd = 1000 * 60 * 60 * 24;
+const year = 365;
+const oldEnough = 365*18;
+let ageResult = dateDiff(currentDate, birthDate, mpd).toFixed();
+//console.log(ageResult);
+//console.log(oldEnough);
+
+//console.log(((currentDate-birthday)/mpd)/year);
+    // and validate inputs here using if statements
+function validate() {
+  if (uid.trim().length === 0 || uid.length > 12 || uid.length < 8) {
+    document.getElementById("uidError").innerHTML = "Please enter a User ID that is between 8 and 12 characters!";
+  }
+  else if (!pattern.test(uid)) {
+    document.getElementById("uidError").innerHTML = "Your User ID must contain an uppercase, a lowercase, and a number!";
+  }
+  else if (fname.trim().length === 0) {
+    document.getElementById("fnameError").innerHTML = "First name can not be empty!";
+  }
+  else if (lname.trim().length === 0) {
+    document.getElementById("lnameError").innerHTML = "Last name can not be empty!";
+  }
+  else if (birthday === "") {
+    document.getElementById("birthdayError").innerHTML = "Birthday can not be empty!";
+  }
+  else if (ageResult < oldEnough) {
+    document.getElementById("birthdayError").innerHTML = "You are probably not old enough to take this class!";
+  }
+  else {
+    document.getElementById("accepted").innerHTML = `${fname} ${lname} you have been breathing for ${ageResult} days!`;
+  }
+}
+    // write your JS functions here
+function dateDiff(a,b,c) {
+  return (a-b)/c;
+}
+
+//console.log(dateDiff(msecB,msecC));
+    // Method to prevent form from submitting to the imaginary backend
+document.getElementById("myForm")
+.addEventListener("submit", function (event) {
+  event.preventDefault();
+});
+    // write your JS Loop For here to print the Xs
+let str = "";
+for (let i = 0; i <= 20; i++) {
+  str += "".padStart(i,"x") + "<br>";
+}
+    // use something like document.write(str.padStart(i,"x") + "<br>");
+document.getElementById("x").innerHTML = str;
+
+
+</script>
+
+</body>
+</html>
